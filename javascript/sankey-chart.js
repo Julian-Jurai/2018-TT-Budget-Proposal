@@ -30,50 +30,87 @@ function nameParse(name){
   return words.join(" ")
 };
 
-//loading file from index.html
+//loading file relative from index.html
 d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
   if (error) {console.log('error loading file');}
   var graph = {'nodes': [], 'links': []};
   var nodes = {};
 
-  var subSectors = {};
-  var mainSectors = {};
+  var smallSectors = {};
+  var largeSectors = {};
 
-  data.forEach((d)=>{
+  data.forEach((d,i)=>{
     d.value = +d.value //string to number
-
+    let lastIdx = data.length - 1
     let source = d.source
     let target = d.target
     let weight =  d.value / totEstExp * 100
-    //|| source === "infrastructure-development-fund"
-    //|| source === "infrastructure-development-fund"
-    // debugger
-    if (source === "ministry-of-national-secruity" || target === "ministry-of-national-secruity"){
-      debugger
+
+    const updateNodesAndLinks = (obj) => {
+      d = obj ? obj : d
+      nodes[d.source] = true
+      nodes[d.target] = true
+      graph.links.push({
+        "source": d.source,
+        "target": d.target,
+        "value": d.value
+      })
+    }
+    // {source: "total-estimated-expediture", target: "tobago-house-of-assembly", value: 1860000000}
+    const createOthers = () => {
+      let src1 = "infrastructure-development-fund"
+      let src2 = "total-estimated-expediture"
+      let value1 = 0
+      let value2 = 0
+      let target = "Others"
+      let others;
+
+      Object.values(smallSectors).forEach((dataPoint)=>{
+        let val = dataPoint.value
+        if (dataPoint.source === src1){
+          value1 += val
+        } else {
+          value2 += val
+        }
+      })
+
+      others = [
+        {
+        source: src1,
+        target: target,
+        value: value1
+        },
+        {
+        source: src2,
+        target: target,
+        value: value2
+        }
+      ]
+
+      others.forEach((obj)=>{
+         updateNodesAndLinks(obj)
+      })
+
     }
 
     if (weight > 0.74 && source !== "infrastructure-development-fund") {
-      mainSectors[target] = true
-      nodes[d.source] = true
-      nodes[d.target] = true
-      graph.links.push({
-        "source": d.source,
-        "target": d.target,
-        "value": d.value
-      })
+      updateNodesAndLinks()
+      largeSectors[target] = d
     } else if (weight <= 0.74){
-      subSectors[target] = true
+      smallSectors[source] = d
     }
 
-    if (source === "infrastructure-development-fund" && mainSectors[target]){
-      nodes[d.source] = true
-      nodes[d.target] = true
-      graph.links.push({
-        "source": d.source,
-        "target": d.target,
-        "value": d.value
-      })
+    if (source === "infrastructure-development-fund" && largeSectors[target]){
+      updateNodesAndLinks()
     }
+
+    if (i === lastIdx) {
+      createOthers()
+
+    }
+
+
+
   });
 
   graph.nodes = Object.keys(nodes);
@@ -91,8 +128,7 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
 
   sankey.nodes(graph.nodes)
         .links(graph.links)
-        .layout(32) //playwiththis :D
-
+        .layout(32)
 
   var link = sankeySvg.append('g').selectAll('.link')
               .data(graph.links)
@@ -105,9 +141,28 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
                 ))
                 .sort((a, b)=>(b.dy - a.dy))
 
-  link.append('title').text((d)=>(
-    d.source.name + " → " + d.target.name + "\n" + format(d.value)
-  ))
+  link.append("title")
+      .text((d)=>(d.source.name + " → " + d.target.name + "\n" + format(d.value)))
+
+  var sankeyDetails = d3.select("#sankey-details").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+  d3.selectAll('.link')
+    .on("mouseover", function(d) {
+      sankeyDetails.transition()
+       .duration(200)
+       .style("opacity", .9);
+      sankeyDetails.html(d.source.name + " → " + d.target.name + "\n" + format(d.value))
+       .style("left", (d3.event.pageX) + "px")
+       .style("top", (d3.event.pageY - 28) + "px");
+    })
+    .on("mouseout", function(d) {
+    sankeyDetails.transition()
+     .duration(500)
+     .style("opacity", 0);
+ });
+
 
   function dragmove(d){
     d3.select(this)
