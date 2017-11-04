@@ -1,4 +1,24 @@
 var data = [10, 50, 60, 50, 40]
+
+function clearDonut(){
+  group.selectAll('g').remove()
+}
+
+function drawDonut(data){
+  clearDonut()
+  var color = d3.scaleOrdinal()
+                .range(["red", "blue", "orange","purple","grey"])
+
+  var arcs = group.selectAll(".arc")
+            .data(pie(data))
+            .enter()
+              .append("g")
+              .attr("class", "arc")
+              .append("path")
+              .attr("d", arc)
+              .attr("fill", (d,i)=>(color(i)))
+}
+
 var r = 100;
 
 var color = d3.scaleOrdinal()
@@ -18,21 +38,13 @@ var arc = d3.arc()
 var pie = d3.pie()
           .value((d)=>(d));
 
-var arcs = group.selectAll(".arc")
-          .data(pie(data))
-          .enter()
-            .append("g")
-            .attr("class", "arc")
+drawDonut(data)
 
-arcs.append("path")
-    .attr("d", arc)
-    .attr("fill", (d,i)=>(color(i)))
-
-arcs.append("text")
-    .attr("transform", (d) => (
-      "translate(" + arc.centroid(d) + ")"
-    ))
-    // .text((d)=>(d.data))
-    // .attr("text-anchor","middle")
-    // .attr("font-size","1.5em")
-    // .attr("fill","white")
+// arcs.append("text")
+//     .attr("transform", (d) => (
+//       "translate(" + arc.centroid(d) + ")"
+//     ))
+//     .text((d)=>(d.data))
+//     .attr("text-anchor","middle")
+//     .attr("font-size","1.5em")
+//     .attr("fill","white")
