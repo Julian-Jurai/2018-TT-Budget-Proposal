@@ -8,11 +8,18 @@
     <link rel="stylesheet" type="text/css" href="./stylesheets/sankey.css">
   </head>
   <body>
-    <div class="sankey-container">
-      <div id="sankey-chart"></div>
-      <div id="sankey-details"/>
+    <header class="outline">
+      <span>Nav Bar</span>
+    </header>
+    <div class="sankey-container outline">
+      <span class="outline" id="sankey-chart"></span>
+      <div class="info outline">
+        <div id="donut-chart">Donut Chart...........</div>
+        <div id="sankey-details">Details</div>
+      </div>
     </div>
 
   </body>
+  <script type="text/javascript" src="./javascript/donut-chart.js"></script>
   <script type="text/javascript" src="./javascript/sankey-chart.js"></script>
 </html>

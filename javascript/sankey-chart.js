@@ -1,6 +1,6 @@
 var margin = {top: 10, right: 10, bottom: 10, left: 20};
-var width = 900 - margin.left - margin.right;
-var height = 900 - margin.top - margin.bottom;
+var width = 500 - margin.left - margin.right;
+var height = 500 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(',.0f');
 var format = (d) => ( '$' + formatNumber(d));
@@ -93,10 +93,10 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
 
     }
 
-    if (weight > 0.74 && source !== "infrastructure-development-fund") {
+    if (weight > 5 && source !== "infrastructure-development-fund") {
       updateNodesAndLinks()
       largeSectors[target] = d
-    } else if (weight <= 0.74){
+    } else if (weight <= 5){
       smallSectors[source] = d
     }
 
