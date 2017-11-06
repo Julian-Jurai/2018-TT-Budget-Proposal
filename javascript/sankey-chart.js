@@ -1,6 +1,6 @@
 var margin = {top: 10, right: 10, bottom: 10, left: 20};
-var width = 500 - margin.left - margin.right;
-var height = 500 - margin.top - margin.bottom;
+var width = 600 - margin.left - margin.right;
+var height = 700 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(',.0f');
 var format = (d) => ( '$' + formatNumber(d));
@@ -21,14 +21,9 @@ var sankey = d3.sankey()
 var path = sankey.link();
 
 const totEstExp = 52507340591; // excluding inf. dev. fund
-
-function nameParse(name){
-  words = name.split("-")
-  words.forEach((wrd,i)=>(
-    words[i] = wrd[0].toUpperCase() + wrd.slice(1)
-  ));
-  return words.join(" ")
-};
+var smallSectors = {};
+var largeSectors = {};
+var allSectors = {}
 
 //loading file relative from index.html
 d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
@@ -36,14 +31,12 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
   var graph = {'nodes': [], 'links': []};
   var nodes = {};
 
-  var smallSectors = {};
-  var largeSectors = {};
-
   data.forEach((d,i)=>{
     d.value = +d.value //string to number
     let lastIdx = data.length - 1
     let source = d.source
     let target = d.target
+    let value = d.value
     let weight =  d.value / totEstExp * 100
 
     const updateNodesAndLinks = (obj) => {
@@ -62,10 +55,12 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
       let src2 = "total-estimated-expediture"
       let value1 = 0
       let value2 = 0
-      let target = "Others"
+      let target = "others"
       let others;
 
+
       Object.values(smallSectors).forEach((dataPoint)=>{
+        debugger
         let val = dataPoint.value
         if (dataPoint.source === src1){
           value1 += val
@@ -87,29 +82,33 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
         }
       ]
 
+      debugger
       others.forEach((obj)=>{
          updateNodesAndLinks(obj)
       })
 
+      //temp
+      allSectors["others"] = value1 + value2
+
+      Object.assign(allSectors,largeSectors)
+
     }
 
-    if (weight > 5 && source !== "infrastructure-development-fund") {
+    if (weight > 1 && source !== "infrastructure-development-fund") {
       updateNodesAndLinks()
-      largeSectors[target] = d
-    } else if (weight <= 5){
-      smallSectors[source] = d
+      largeSectors[target] = d.value
+    } else if (weight <= 1){
+      smallSectors[source + " > " + target] = d
     }
 
     if (source === "infrastructure-development-fund" && largeSectors[target]){
       updateNodesAndLinks()
+      largeSectors[target] += d.value
     }
 
     if (i === lastIdx) {
       createOthers()
-
     }
-
-
 
   });
 
@@ -161,8 +160,15 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
     sankeyDetails.transition()
      .duration(500)
      .style("opacity", 0);
- });
+    });
 
+  function nameParse(name){
+   words = name.split("-")
+   words.forEach((wrd,i)=>(
+     words[i] = wrd[0].toUpperCase() + wrd.slice(1)
+   ));
+   return words.join(" ")
+  };
 
   function dragmove(d){
     d3.select(this)
@@ -175,20 +181,20 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
   }
 
   var node = sankeySvg.append('g').selectAll('.node')
-              .data(graph.nodes)
-              .enter()
-                .append("g")
-                .attr("class","node")
-                .attr("transform", (d)=>(
-                  "translate(" + d.x + "," + d.y + ")"
-                ))
-                .call(d3.drag()
-                  .subject((d)=>(d))
-                  .on("start", function() {
-                    this.parentNode.appendChild(this);
-                  })
-                  .on("drag", dragmove)
-                );
+        .data(graph.nodes)
+        .enter()
+          .append("g")
+          .attr("class","node")
+          .attr("transform", (d)=>(
+            "translate(" + d.x + "," + d.y + ")"
+          ))
+          .call(d3.drag()
+            .subject((d)=>(d))
+            .on("start", function() {
+              this.parentNode.appendChild(this);
+            })
+            .on("drag", dragmove)
+          );
 
   node.append("text")
           .attr("x", -6)
@@ -201,20 +207,18 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
           .attr("x", 6 + sankey.nodeWidth())
           .attr("text-anchor", "start")
 
-
   node.append("rect")
       .attr("height", (d)=>{
         return d.dy})
       .attr("width", sankey.nodeWidth())
-      .style("fill", (d)=>(
+      .style("fill", (d)=>{
         d.color = color(d.name.replace(/ .*/, ""))
-      ))
+        return d.color
+      })
       .style("stroke", (d)=>(
             d3.rgb(d.color).darker(2)
       ))
       .append("title")
         .text((d)=>(d.name + "\n" + format(d.value)))
-
-
 
 })//csv load ends
