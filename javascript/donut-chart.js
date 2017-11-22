@@ -66,14 +66,14 @@ var data = Object.keys(allSecs)
 var donutChart = d3.select("#donut-chart").append("svg")
               .attr("width",200)
               .attr("height",200)
+              .style("border","1px solid black")
 
 var group = donutChart.append("g")
-      .attr("transform", "translate(100,100)")
+      .attr("transform", "translate(100,110)")
 
 function clearDonut(){
   group.selectAll('g').remove()
 }
-
 
 var pie = d3.pie()
           .value((d)=>(allSecs[d]));
@@ -88,7 +88,7 @@ function nameParse(name){
 
 function createLegend(data){
 
-  var legendSvg = d3.select("#donut-chart-legend").append("svg").attr("height",260)
+  var legendSvg = d3.select("#donut-chart-legend").append("svg").attr("height","240").style("border","1px solid black")
 
   var group = legendSvg.append("g").selectAll(".legend")
     .data(data)
@@ -96,7 +96,7 @@ function createLegend(data){
       .append("g")
       .attr("class", "legend")
       .attr("transform", (d,i)=>{
-        return  "translate(" + 0 + "," + (i * 15 + 20) + ")"; // place each legend on the right and bump each one down 15 pixels
+        return  "translate(" + 0 + "," + (i * 15) + ")"; // place each legend on the right and bump each one down 15 pixels
       })
 
   group.append("rect")
@@ -112,28 +112,21 @@ function createLegend(data){
     })
     .style("font-size", "12px")
     .attr("y", "10px")
-    .attr("x", "12px");
+    .attr("x", "12px")
 
-    text = d3.select('#donut-chart-legend')
-              .append('div')
-              .text("Others comprise of the following sectors: ")
-              .style("font-size", "11px")
+  text = d3.select('#donut-chart-legend')
+            .append('div')
+            .text("Others comprise of the following sectors: ")
+            .style("font-size", "12px")
 
-      text.append('ul').selectAll('.others')
-        .data(Object.keys(smallSecs))
-        .enter()
-          .append('li')
-          .text((d)=>{return nameParse(d) })
-          .attr("class", "others")
-          .style("font-size", "10px")
+  text.append('ul').selectAll('.others')
+    .data(Object.keys(smallSecs).sort((a,b)=>(a.length - b.length)))
+    .enter()
+      .append('li')
+      .text((d)=>{return nameParse(d) })
+      .attr("class", "others")
+      .style("font-size", "10px")
 
-
-    // .append("ul")
-
-  // group.select('ul').selectAll('other-items')
-  //   .enter()
-  //     .append("li")
-  //     .text("")
 }
 
 function drawDonut(data){
