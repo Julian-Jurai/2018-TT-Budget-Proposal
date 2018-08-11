@@ -1,0 +1,66 @@
+/* SANKEY */
+.node rect {
+  cursor: move;
+  fill-opacity: .9;
+  shape-rendering: crispEdges;
+}
+
+.node text {
+  font-family: arial;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .2;
+}
+
+.link:hover {
+  stroke-opacity: .5;
+}
+
+/*Sankey Chart*/
+.sankey-container {
+  display: flex;
+  flex-direction: row;
+}
+/* SANKEY */
+
+/* DONUT */
+#donut-chart-legend ul {
+  /* padding-left: 14px;
+  margin-top: 5px; */
+}
+
+.info {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+li.others {
+  width: 300px;
+  float: left;
+  margin: 3px 25px;
+}
+
+/* DONUT */
+
+/* GEN */
+  body {
+    font: message-box;
+    background-image: url("/assets/TTIMG2.jpg");
+    background-size: 63%;
+    background-position: 130% -44%;
+    background-repeat: no-repeat;
+  }
+  .outline {
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+/* GEN */

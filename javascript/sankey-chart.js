@@ -1,5 +1,5 @@
 var margin = {top: 10, right: 10, bottom: 10, left: 20};
-var width = 600 - margin.left - margin.right;
+var width = 1000 - margin.left - margin.right;
 var height = 900 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(',.0f');
@@ -152,7 +152,15 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
       sankeyDetails.transition()
        .duration(200)
        .style("opacity", .9);
-      sankeyDetails.html(d.source.name + " → " + d.target.name + "\n" + format(d.value))
+      sankeyDetails.html(
+        "Amount allocated from " + "<b>" +
+          d.source.name.split('-').map(lower => lower.charAt(0).toUpperCase() + lower.substr(1)).join(" ") +
+        "</b>" + " towards " + "<b>" +
+          d.target.name.split('-').map(lower => lower.charAt(0).toUpperCase() + lower.substr(1)).join(" ") +
+        "</b>" + " was " +
+        "<b>" + format(d.value) + " TTD " +
+         "</b>"
+      )
        .style("left", (d3.event.pageX) + "px")
        .style("top", (d3.event.pageY - 28) + "px");
     })

@@ -5,19 +5,26 @@
     <title></title>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="./javascript/sankey.js"></script>
-    <link rel="stylesheet" type="text/css" href="./stylesheets/sankey.css">
-    <link rel="stylesheet" type="text/css" href="./stylesheets/donut.css">
+    <link rel="stylesheet" type="text/css" href="./stylesheets/index.css">
   </head>
+  <style>
+  </style>
   <body>
     <header class="outline">
-      <span>Nav Bar</span>
+      <h1>2018 Trinidad and Tobago Budget Propsal</h1>
+      <h4><em>By Julian Jurai</em></h4>
+      <h4><em>🇹🇹Hover over the the relatioships to see the allocations🇹🇹</em></h4>
+      <div id="sankey-details">
+      </div>
     </header>
-    <div class="sankey-container outline">
+    <div class="sankey-container">
       <span class="outline" id="sankey-chart"></span>
-      <div class="info outline">
-        <div id="donut-chart"></div>
-        <div id="donut-chart-legend"></div>
-        <div id="sankey-details">Details</div>
+      <div class="outline">
+        <div class="info">
+          <div id="donut-chart"></div>
+          <div id="donut-chart-legend"></div>
+        </div>
+        <div id="donut-chart-legend-other"></div>
       </div>
     </div>
 
