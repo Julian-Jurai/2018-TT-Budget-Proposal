@@ -36,16 +36,20 @@
 
 /* DONUT */
 
-.donut-info {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
+#donut-chart-legend {
+  margin-left: 20px;
 }
 
-li.others {
-  width: 300px;
-  float: left;
-  margin: 3px 25px;
+.donut-info {
+  display: flex;
+}
+
+.others-container {
+  columns: 100px 2;
+}
+
+.others {
+  padding: 5px;
 }
 
 /* DONUT */
@@ -54,16 +58,18 @@ li.others {
   body {
     font: message-box;
     background-image: url("/assets/TTIMG2.jpg");
-    background-size: 63%;
+    background-size: 58%;
     background-position: 130% -44%;
     background-repeat: no-repeat;
   }
   .outline {
     border: 1px solid black;
-    padding: 10px 20px;
+    padding: 10px 10px;
     border-radius: 5px;
-    margin: 20px;
+    margin: 5px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: white;
+    height: max-content;
   }
 
   .sticky-container {
@@ -91,9 +97,7 @@ li.others {
     background-color: black;
     color: #fff;
     border-radius: 5px;
-    padding: 5px;
-
-    /* Position the tooltip */
+    padding-right: 20px;
     position: absolute;
     top: -15px;
     left: 19px;
@@ -107,6 +111,6 @@ li.others {
 
   #tt-icon{
     vertical-align: middle;
-    padding: 5px;
+    padding: 7px;
   }
 /* GEN */

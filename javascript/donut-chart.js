@@ -64,11 +64,11 @@ var smallSecs = {
 var data = Object.keys(allSecs)
 
 var donutChart = d3.select("#donut-chart").append("svg")
-              .attr("width",310)
-              .attr("height",310)
+              .attr("width",220)
+              .attr("height",220)
 
 var group = donutChart.append("g")
-      .attr("transform", "translate(155,160)")
+      .attr("transform", "translate(110,110)")
 
 function clearDonut(){
   group.selectAll('g').remove()
@@ -87,7 +87,9 @@ function nameParse(name){
 
 function createLegend(data){
 
-  var legendSvg = d3.select("#donut-chart-legend").append("svg").attr("height","300")
+  var legendSvg = d3.select("#donut-chart-legend").append("svg")
+    .attr("height","250")
+    .attr("width","260")
 
   var group = legendSvg.append("g").selectAll(".legend")
     .data(data)
@@ -95,12 +97,12 @@ function createLegend(data){
       .append("g")
       .attr("class", "legend")
       .attr("transform", (d,i)=>{
-        return  "translate(" + 0 + "," + (i * 19) + ")"; // place each legend on the right and bump each one down 15 pixels
+        return  "translate(" + 0 + "," + (i * 15) + ")"; // place each legend on the right and bump each one down 15 pixels
       })
 
   group.append("rect")
     .attr("width", 17)
-    .attr("height", 15)
+    .attr("height", 10)
     .attr("fill", (d,i)=>{
       return color(d.replace(/ .*/, ""));
     });
@@ -109,8 +111,8 @@ function createLegend(data){
     .text(function(d){
       return nameParse(d);
     })
-    .style("font-size", "15px")
-    .attr("y", "13px")
+    .style("font-size", "9px")
+    .attr("y", "8px")
     .attr("x", "20px")
 
   text = d3.select('#donut-chart-legend-other')
@@ -120,11 +122,11 @@ function createLegend(data){
             .style("font-weight", "bold")
             .style("padding-top", "50px")
 
-  text.append('ul').selectAll('.others')
-    .data(Object.keys(smallSecs).sort((a,b)=>(a.length - b.length)))
+  text.append('div').attr("class", "others-container").selectAll('.others')
+    .data(Object.keys(smallSecs).sort())
     .enter()
-      .append('li')
-      .text((d)=>{return nameParse(d) })
+      .append('div')
+    .text((d) => ("• " + nameParse(d)))
       .attr("class", "others")
       .style("font-size", "10px")
       .style("font-weight", "initial")
@@ -134,10 +136,10 @@ function createLegend(data){
 function drawDonut(data){
   clearDonut()
 
-  var r = 150;
+  var r = 100;
 
   var arc = d3.arc()
-          .innerRadius(50)
+          .innerRadius(20)
           .outerRadius(r)
 
   var arcs = group.selectAll(".arc")

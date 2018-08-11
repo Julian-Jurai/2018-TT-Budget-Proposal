@@ -1,6 +1,6 @@
 var margin = {top: 10, right: 10, bottom: 10, left: 20};
-var width = 1000 - margin.left - margin.right;
-var height = 900 - margin.top - margin.bottom;
+var width = 700 - margin.left - margin.right;
+var height = 1000 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(',.0f');
 var format = (d) => ( '$' + formatNumber(d));
@@ -14,7 +14,7 @@ var sankeySvg = d3.select('#sankey-chart').append('svg')
                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 var sankey = d3.sankey()
-                .nodeWidth(30)
+                .nodeWidth(15)
                 .nodePadding(15)
                 .size([width, height]);
 
