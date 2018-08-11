@@ -36,7 +36,6 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
     let lastIdx = data.length - 1
     let source = d.source
     let target = d.target
-    let value = d.value
     let weight =  d.value / totEstExp * 100
 
     const updateNodesAndLinks = (obj) => {
@@ -60,7 +59,6 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
 
 
       Object.values(smallSectors).forEach((dataPoint)=>{
-        debugger
         let val = dataPoint.value
         if (dataPoint.source === src1){
           value1 += val
@@ -82,7 +80,6 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
         }
       ]
 
-      debugger
       others.forEach((obj)=>{
          updateNodesAndLinks(obj)
       })
@@ -140,35 +137,27 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
                 ))
                 .sort((a, b)=>(b.dy - a.dy))
 
-  link.append("title")
-      .text((d)=>(d.source.name + " → " + d.target.name + "\n" + format(d.value)))
+  //On hover on link
+  // link.append("title")
+  //     .text((d)=>(d.source.name + " → " + d.target.name + "\n" + format(d.value)))
 
-  var sankeyDetails = d3.select("#sankey-details").append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+  var sankeyDetails = d3.select("#sankey-details")
 
   d3.selectAll('.link')
     .on("mouseover", function(d) {
-      sankeyDetails.transition()
-       .duration(200)
-       .style("opacity", .9);
       sankeyDetails.html(
-        "Amount allocated from " + "<b>" +
-          d.source.name.split('-').map(lower => lower.charAt(0).toUpperCase() + lower.substr(1)).join(" ") +
-        "</b>" + " towards " + "<b>" +
-          d.target.name.split('-').map(lower => lower.charAt(0).toUpperCase() + lower.substr(1)).join(" ") +
-        "</b>" + " was " +
-        "<b>" + format(d.value) + " TTD " +
+        "&nbsp;&nbsp;&nbsp;" +
+        "Amount allocated from" + "&nbsp;" + "<b>" +
+        nameParse(d.source.name) +
+        "</b>" + "&nbsp;towards&nbsp;" + "<b>" +
+        nameParse(d.target.name) +
+        "</b>" + "&nbsp;was&nbsp;" +
+        "<b>" + format(d.value) + "&nbsp;TTD" +
          "</b>"
       )
        .style("left", (d3.event.pageX) + "px")
        .style("top", (d3.event.pageY - 28) + "px");
     })
-    .on("mouseout", function(d) {
-    sankeyDetails.transition()
-     .duration(500)
-     .style("opacity", 0);
-    });
 
   function nameParse(name){
    words = name.split("-")
@@ -227,6 +216,6 @@ d3.csv('./data/2018-proposed-expenditure.csv', (error,data)=>{
             d3.rgb(d.color).darker(2)
       ))
       .append("title")
-        .text((d)=>(d.name + "\n" + format(d.value)))
+      .text((d) => (nameParse(d.name)+ "\n" + format(d.value)))
 
 })//csv load ends

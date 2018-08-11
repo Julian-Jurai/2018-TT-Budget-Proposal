@@ -7,20 +7,27 @@
     <script src="./javascript/sankey.js"></script>
     <link rel="stylesheet" type="text/css" href="./stylesheets/index.css">
   </head>
-  <style>
-  </style>
   <body>
     <header class="outline">
       <h1>2018 Trinidad and Tobago Budget Propsal</h1>
-      <h4><em>By Julian Jurai</em></h4>
-      <h4><em>🇹🇹Hover over the the relatioships to see the allocations🇹🇹</em></h4>
-      <div id="sankey-details">
-      </div>
+      <b><em>By Julian Jurai</em></b>
     </header>
+    <div class="sub outline sticky-container">
+        <span class="info">
+          ⓘ<span class="info-text">
+            <ul>
+              <li>Move mouse over the connecting segments to see how much was allocated between two blocks</li>
+              <li>Move mouse over a block to see the total allocation of that block (hover for approximately 3sec.)</li>
+            </ul>
+          </span>
+        </span>
+        <img src="assets/TTIMG.png" alt="icon" height="42" width="42" id="tt-icon">
+      <span id="sankey-details"></span>
+    </div>
     <div class="sankey-container">
       <span class="outline" id="sankey-chart"></span>
       <div class="outline">
-        <div class="info">
+        <div class="donut-info">
           <div id="donut-chart"></div>
           <div id="donut-chart-legend"></div>
         </div>
@@ -28,7 +35,23 @@
       </div>
     </div>
 
+    <div class="footer outline">Disclaimer: This is merely a demonstrative exercise to explore the capablities of the D3.js library. Information used in this exercise was sourced from the <a>official document</a> of the draft estimates created and released by the government of Trinidad and Tobago. The Information present here is stricly used as a demonstration of a javascript library and not to be iterpreted as a cited source of information.</div>
+
   </body>
   <script type="text/javascript" src="./javascript/sankey-chart.js"></script>
   <script type="text/javascript" src="./javascript/donut-chart.js"></script>
+  <script>
+    window.onscroll = function () {scrollFunction()};
+    function getScrollPercent() {
+        var h = document.documentElement,
+          b = document.body,
+          st = 'scrollTop',
+          sh = 'scrollHeight';
+        return (h[st] || b[st]) / ((h[sh] || b[sh]) - h.clientHeight);
+    }
+    function scrollFunction() {
+      document.getElementById("tt-icon").style.transform = `rotate(${getScrollPercent() * 360}deg)`;
+    }
+  </script>
+
 </html>
