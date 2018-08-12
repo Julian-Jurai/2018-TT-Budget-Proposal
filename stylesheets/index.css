@@ -57,10 +57,9 @@
 /* GEN */
   body {
     font: message-box;
-    background-image: url("/assets/TTIMG2.jpg");
-    background-size: 58%;
-    background-position: 130% -44%;
-    background-repeat: no-repeat;
+    background-image: url(/assets/TTIMG3.svg);
+    background-size: 80%;
+    background-position: 189px -33%;
   }
   .outline {
     border: 1px solid black;
