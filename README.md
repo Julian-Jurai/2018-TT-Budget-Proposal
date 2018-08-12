@@ -6,7 +6,7 @@ The purpose of this project is simply to explore the capabilites of the various 
 
 To run this project locally you will need a local webserver running to avoid chrome's CORS.
 
-### Live Link to [Trinidad and Tobago 2018 Budget Propsoal]()
+### Live Link to [Trinidad and Tobago 2018 Budget Propsoal](http://jjurai.com/2018-TT-Budget-Proposal/)
 
 ### Screen Shot
 ![Screen Shot](/assets/screenshot.png "Screen Shot")
