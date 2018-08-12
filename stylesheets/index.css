@@ -55,12 +55,23 @@
 /* DONUT */
 
 /* GEN */
+
   body {
     font: message-box;
-    background-image: url(/assets/TTIMG3.svg);
+    background-image: url(https://raw.githubusercontent.com/Julian-Jurai/2018-TT-Budget-Proposal/master/assets/TTIMG3.svg);
     background-size: 80%;
     background-position: 189px -33%;
   }
+
+  #bkg{
+    position: absolute;
+    z-index: -1;
+    right: -154px;
+    top: -65%;
+    height: 173%;
+    width: 65%;
+  }
+
   .outline {
     border: 1px solid black;
     padding: 10px 10px;
